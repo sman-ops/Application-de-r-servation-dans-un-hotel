@@ -12,8 +12,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useContext, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { SearchContext } from '../../context/SearchContext';
+import { AuthContext } from '../../context/AuthContext';
+import Reserve from '../../components/reserve/Reserve';
 
 const Hotel = () => {
   // const { id } = useParams();
@@ -22,6 +24,7 @@ const Hotel = () => {
 
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -45,6 +48,8 @@ const Hotel = () => {
   );
 
   const { dates, options } = useContext(SearchContext);
+
+  const { user } = useContext(AuthContext);
   console.log(dates);
 
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -55,7 +60,15 @@ const Hotel = () => {
   }
 
   const days = dayDifference(dates[0].endDate, dates[0].startDate);
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    if (user) {
+      setOpenModal(true);
+    } else {
+      navigate('/login');
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -133,7 +146,7 @@ const Hotel = () => {
                     <b>${days * data.cheapestPrice * options.room}</b> ({days}{' '}
                     nights)
                   </h2>
-                  <button>Reserve or Book Now!</button>
+                  <button onClick={handleClick}>Reserve or Book Now!</button>
                 </div>
               </div>
             </div>
@@ -142,6 +155,7 @@ const Hotel = () => {
           </div>
         </>
       )}
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };

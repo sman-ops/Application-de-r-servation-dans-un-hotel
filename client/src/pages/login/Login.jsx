@@ -13,7 +13,10 @@ const Login = () => {
   });
 
   const handleChange = (e) => {
-    setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+    setCredentials((current) => ({
+      ...current,
+      [e.target.id]: e.target.value,
+    }));
   };
 
   const navigate = useNavigate();

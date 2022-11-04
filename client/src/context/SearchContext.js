@@ -22,7 +22,7 @@ const SearchReducer = (state, action) => {
       return state;
   }
 };
-
+// dispatch : allows us to send actions to reducer
 export const SearchContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(SearchReducer, INITIAL_STATE);
 

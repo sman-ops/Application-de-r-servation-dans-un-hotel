@@ -3,15 +3,22 @@ import Home from './pages/home/Home';
 import Hotel from './pages/hotel/Hotel';
 import List from './pages/list/List';
 import Login from './pages/login/Login';
+import Register from './pages/Register/Register';
 
 function App() {
+  const routes = [
+    { path: '/', component: <Home /> },
+    { path: '/hotels', component: <List /> },
+    { path: '/hotels/:id', component: <Hotel /> },
+    { path: '/login', component: <Login /> },
+    { path: '/register', component: <Register /> },
+  ];
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/hotels" element={<List />} />
-        <Route path="/hotels/:id" element={<Hotel />} />
-        <Route path="/login" element={<Login />} />
+        {routes.map((item, index) => (
+          <Route Key={index} path={item.path} element={item.component} />
+        ))}
       </Routes>
     </BrowserRouter>
   );

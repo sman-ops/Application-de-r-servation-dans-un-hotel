@@ -1,30 +1,45 @@
-import "./datatable.scss";
-import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import './datatable.scss';
+import { DataGrid } from '@mui/x-data-grid';
+import { userColumns, userRows } from '../../datatablesource';
+import { Link, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import useFetch from '../../hooks/useFetch';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Datatable = () => {
-  const [data, setData] = useState(userRows);
+  const location = useLocation();
+  const path = location.pathname.split('/')[1];
+  const [list, setList] = useState([]);
+  const { data, loading, error } = useFetch(
+    `http://localhost:4000/api/${path}`
+  );
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4000/api/${path}/${id}`);
+      setList(list.filter((item) => item._id !== id));
+    } catch (err) {}
   };
+
+  useEffect(() => {
+    setList(data);
+  }, [data]);
 
   const actionColumn = [
     {
-      field: "action",
-      headerName: "Action",
+      field: 'action',
+      headerName: 'Action',
       width: 200,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            <Link to="/users/test" style={{ textDecoration: 'none' }}>
               <div className="viewButton">View</div>
             </Link>
             <div
               className="deleteButton"
-              onClick={() => handleDelete(params.row.id)}
+              onClick={() => handleDelete(params.row._id)}
             >
               Delete
             </div>
@@ -43,11 +58,12 @@ const Datatable = () => {
       </div>
       <DataGrid
         className="datagrid"
-        rows={data}
+        rows={list}
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
+        getRowId={(row) => row._id}
       />
     </div>
   );

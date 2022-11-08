@@ -1,11 +1,11 @@
-import "./new.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
-import { useState } from "react";
+import './new.scss';
+import Sidebar from '../../components/sidebar/Sidebar';
+import Navbar from '../../components/navbar/Navbar';
+import DriveFolderUploadOutlinedIcon from '@mui/icons-material/DriveFolderUploadOutlined';
+import { useState } from 'react';
 
 const New = ({ inputs, title }) => {
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState('');
 
   return (
     <div className="new">
@@ -21,7 +21,7 @@ const New = ({ inputs, title }) => {
               src={
                 file
                   ? URL.createObjectURL(file)
-                  : "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg"
+                  : 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg'
               }
               alt=""
             />
@@ -36,7 +36,7 @@ const New = ({ inputs, title }) => {
                   type="file"
                   id="file"
                   onChange={(e) => setFile(e.target.files[0])}
-                  style={{ display: "none" }}
+                  style={{ display: 'none' }}
                 />
               </div>
 
